@@ -36,14 +36,12 @@ final class AssertTests: XCTestCase {
         }
     }
 
-    func testAssertThrows() throws {
-        struct UnwrapError: Error {}
-        assertThrows(UnwrapError())
-
+    func testAssertThrows() {
+        struct TestError: Error {}
         func test() throws {
-            throw UnwrapError()
+            throw TestError()
         }
-        try assertThrows(test())
+        assertThrows(try test())
     }
 
     func testMap() {

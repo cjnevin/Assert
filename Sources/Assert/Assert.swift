@@ -18,14 +18,8 @@ public func assert<T>(_ value: @autoclosure () throws -> T) rethrows -> Assert<T
     try .init(value())
 }
 
-struct DidNotThrowError: Error {}
-public func assertThrows<T>(_ closure: @autoclosure () throws -> T, file: StaticString = #file, line: UInt = #line) rethrows {
-    do {
-        _ = try closure()
-        throw DidNotThrowError()
-    } catch {
-
-    }
+public func assertThrows<T>(_ closure: @autoclosure () throws -> T, file: StaticString = #file, line: UInt = #line) {
+    XCTAssertThrowsError(try closure(), file: file, line: line)
 }
 
 public func scope<T>(_ scope: T, _ closure: (Assert<T>) throws -> Void) rethrows {
