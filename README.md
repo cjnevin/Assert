@@ -19,7 +19,7 @@ assert(user.id) >= 1
 assert(user.id) > 0 
 
 // within range
-scope(user.id) {
+assert(user.id) {
   // within range
   $0 =~ 0...2
   0...2 ~= $0
@@ -30,12 +30,12 @@ scope(user.id) {
 }
 
 // scoping
-scope(user.prefs) {
+assert(user.prefs) {
   $0.email == true
   $0.phone == false
 }
-scope(user) {
-  $0.prefs.scope {
+assert(user) {
+  $0.prefs.assert {
     $0.email == true
     $0.phone == false
   }
@@ -47,7 +47,7 @@ assert(user.dictionary.keys.sorted()) == ["a", "b"]
 // unwrap optional
 try assert(user.optional).unwrap() == "abc"
 try unwrap(user.optional) == "abc"
-try scope(try unwrap(user.optional)) {
+try assert(try unwrap(user.optional)) {
   $0.isEmpty == false
 }
 ```
