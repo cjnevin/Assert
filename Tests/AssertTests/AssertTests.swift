@@ -24,7 +24,7 @@ final class AssertTests: XCTestCase {
     }
 
     func testComparable() {
-        scope(user.id) {
+        assert(user.id) {
             $0 > 0
             $0 >= 0
             $0 < 2
@@ -65,14 +65,16 @@ final class AssertTests: XCTestCase {
         try assert(copy.optional).unwrap() == "abc"
     }
 
-    func testScope() {
-        scope(user.prefs) {
+    func testScopedAssert() {
+        assert(user.prefs) {
             $0.email == true
             $0.phone == true
         }
-        assert(user.prefs).scope {
-            $0.email == true
-            $0.phone == true
+        assert(user) {
+            $0.prefs.assert {
+                $0.email == true
+                $0.phone == true
+            }
         }
     }
 }

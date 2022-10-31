@@ -18,12 +18,12 @@ public func assert<T>(_ value: @autoclosure () throws -> T) rethrows -> Assert<T
     try .init(value())
 }
 
-public func assertThrows<T>(_ closure: @autoclosure () throws -> T, file: StaticString = #file, line: UInt = #line) {
-    XCTAssertThrowsError(try closure(), file: file, line: line)
+public func assert<T>(_ root: T, _ closure: (Assert<T>) throws -> Void) rethrows {
+    try closure(assert(root))
 }
 
-public func scope<T>(_ scope: T, _ closure: (Assert<T>) throws -> Void) rethrows {
-    try closure(assert(scope))
+public func assertThrows<T>(_ closure: @autoclosure () throws -> T, file: StaticString = #file, line: UInt = #line) {
+    XCTAssertThrowsError(try closure(), file: file, line: line)
 }
 
 public func unwrap<T: OptionalType>(_ value: T) throws -> Assert<T.Wrapped> {
@@ -39,10 +39,10 @@ public struct Assert<T> {
     }
 
     public subscript<Value>(dynamicMember keyPath: KeyPath<T, Value>) -> Assert<Value> {
-        assert(value[keyPath: keyPath])
+        .init(value[keyPath: keyPath])
     }
 
-    public func scope(_ closure: @escaping (Self) throws -> Void) rethrows {
+    public func assert(_ closure: @escaping (Self) throws -> Void) rethrows {
         try closure(self)
     }
 
