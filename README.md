@@ -35,7 +35,7 @@ assert(user.prefs) {
   $0.phone == false
 }
 assert(user) {
-  $0.prefs.scope {
+  assert($0.prefs) {
     $0.email == true
     $0.phone == false
   }

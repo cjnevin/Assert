@@ -46,10 +46,6 @@ public struct Assert<T> {
         .init(value[keyPath: keyPath])
     }
 
-    public func scope(_ closure: @escaping (Self) throws -> Void) rethrows {
-        try closure(self)
-    }
-
     public func map<U>(_ closure: (T) -> U) -> Assert<U> {
         .init(closure(value))
     }
