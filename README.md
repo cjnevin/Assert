@@ -50,4 +50,9 @@ try unwrap(user.optional) == "abc"
 try assert(try unwrap(user.optional)) {
   $0.isEmpty == false
 }
+
+// using words
+assert(user.prefs.email).isTrue()
+assert(user.prefs.sms).isFalse()
+assert(user.prefs.name).equals("test")
 ```
