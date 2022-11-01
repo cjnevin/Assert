@@ -22,6 +22,10 @@ public func assert<T>(_ root: T, _ closure: (Assert<T>) throws -> Void) rethrows
     try closure(assert(root))
 }
 
+public func assertNoThrow<T>(_ closure: @autoclosure () throws -> T, file: StaticString = #file, line: UInt = #line) {
+    XCTAssertNoThrow(try closure(), file: file, line: line)
+}
+
 public func assertThrows<T>(_ closure: @autoclosure () throws -> T, file: StaticString = #file, line: UInt = #line) {
     XCTAssertThrowsError(try closure(), file: file, line: line)
 }
@@ -42,16 +46,12 @@ public struct Assert<T> {
         .init(value[keyPath: keyPath])
     }
 
-    public func assert(_ closure: @escaping (Self) throws -> Void) rethrows {
+    public func scope(_ closure: @escaping (Self) throws -> Void) rethrows {
         try closure(self)
     }
 
     public func map<U>(_ closure: (T) -> U) -> Assert<U> {
         .init(closure(value))
-    }
-
-    public func explodes<T>(_ closure: @escaping (Self) throws -> T, file: StaticString = #file, line: UInt = #line) rethrows {
-        XCTAssertThrowsError(try closure(self), file: file, line: line)
     }
 }
 

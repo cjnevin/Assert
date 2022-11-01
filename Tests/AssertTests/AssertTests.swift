@@ -71,7 +71,7 @@ final class AssertTests: XCTestCase {
             $0.phone == true
         }
         assert(user) {
-            $0.prefs.assert {
+            $0.prefs.scope {
                 $0.email == true
                 $0.phone == true
             }
