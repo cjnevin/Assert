@@ -44,6 +44,11 @@ final class AssertTests: XCTestCase {
         assertThrows(try test())
     }
 
+    func testAssertNoThrow() {
+        func test() throws {}
+        assertNoThrow(try test())
+    }
+
     func testMap() {
         assert(user.name).map { String($0.reversed()) } == "tset"
     }
