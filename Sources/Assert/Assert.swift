@@ -30,8 +30,12 @@ public func assertThrows<T>(_ closure: @autoclosure () throws -> T, file: Static
     XCTAssertThrowsError(try closure(), file: file, line: line)
 }
 
-public func unwrap<T: OptionalType>(_ value: T) throws -> Assert<T.Wrapped> {
+public func assert<T: OptionalType>(unwrapping value: T) throws -> Assert<T.Wrapped> {
     try assert(value).unwrap()
+}
+
+public func assert<T: OptionalType>(unwrapping value: T, closure: (Assert<T.Wrapped>) throws -> Void) throws {
+    try closure(try assert(value).unwrap())
 }
 
 @dynamicMemberLookup

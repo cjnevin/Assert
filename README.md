@@ -46,8 +46,8 @@ assert(user.dictionary.keys.sorted()) == ["a", "b"]
 
 // unwrap optional
 try assert(user.optional).unwrap() == "abc"
-try unwrap(user.optional) == "abc"
-try assert(try unwrap(user.optional)) {
+try assert(unwrapping: user.optional) == "abc"
+try assert(unwrapping: user.optional) {
   $0.isEmpty == false
 }
 

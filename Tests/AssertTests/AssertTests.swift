@@ -68,6 +68,12 @@ final class AssertTests: XCTestCase {
         assert(copy.optional).notNil()
 
         try assert(copy.optional).unwrap() == "abc"
+
+        try assert(unwrapping: copy.optional) == "abc"
+
+        try assert(unwrapping: copy.optional) {
+            $0 == "abc"
+        }
     }
 
     func testScopedAssert() {
