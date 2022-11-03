@@ -22,6 +22,14 @@ public func assert<T>(_ root: T, _ closure: (Assert<T>) throws -> Void) rethrows
     try closure(assert(root))
 }
 
+public func assert<T: OptionalType>(unwrapping value: T) throws -> Assert<T.Wrapped> {
+    try assert(value).unwrap()
+}
+
+public func assert<T: OptionalType>(unwrapping value: T, closure: (Assert<T.Wrapped>) throws -> Void) throws {
+    try closure(try assert(value).unwrap())
+}
+
 public func assertNoThrow<T>(_ closure: @autoclosure () throws -> T, file: StaticString = #file, line: UInt = #line) {
     XCTAssertNoThrow(try closure(), file: file, line: line)
 }
@@ -30,12 +38,22 @@ public func assertThrows<T>(_ closure: @autoclosure () throws -> T, file: Static
     XCTAssertThrowsError(try closure(), file: file, line: line)
 }
 
-public func assert<T: OptionalType>(unwrapping value: T) throws -> Assert<T.Wrapped> {
-    try assert(value).unwrap()
+// MARK: - Async
+
+public func assert<T>(_ value: @autoclosure () async throws -> T) async rethrows -> Assert<T> {
+    try await .init(value())
 }
 
-public func assert<T: OptionalType>(unwrapping value: T, closure: (Assert<T.Wrapped>) throws -> Void) throws {
-    try closure(try assert(value).unwrap())
+public func assert<T>(_ root: T, _ closure: (Assert<T>) async throws -> Void) async rethrows {
+    try await closure(assert(root))
+}
+
+public func assert<T: OptionalType>(unwrapping value: T) async throws -> Assert<T.Wrapped> {
+    try await assert(value).unwrap()
+}
+
+public func assert<T: OptionalType>(unwrapping value: T, closure: (Assert<T.Wrapped>) async throws -> Void) async throws {
+    try await closure(try await assert(value).unwrap())
 }
 
 @dynamicMemberLookup

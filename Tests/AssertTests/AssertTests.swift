@@ -36,6 +36,13 @@ final class AssertTests: XCTestCase {
         }
     }
 
+    func testAssertAsync() async throws {
+        func test() async -> String { "" }
+        func testOptional() async -> String? { "" }
+        await assert(await test()).isEmpty == true
+        try await assert(unwrapping: await testOptional()).isEmpty == true
+    }
+
     func testAssertThrows() {
         struct TestError: Error {}
         func test() throws {
