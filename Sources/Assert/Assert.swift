@@ -40,20 +40,20 @@ public func assertThrows<T>(_ closure: @autoclosure () throws -> T, file: Static
 
 // MARK: - Async
 
-public func assert<T>(_ value: @autoclosure () async throws -> T) async rethrows -> Assert<T> {
+public func assert<T>(async value: @autoclosure () async throws -> T) async rethrows -> Assert<T> {
     try await .init(value())
 }
 
-public func assert<T>(_ root: T, _ closure: (Assert<T>) async throws -> Void) async rethrows {
+public func assert<T>(async root: T, _ closure: (Assert<T>) async throws -> Void) async rethrows {
     try await closure(assert(root))
 }
 
-public func assert<T: OptionalType>(unwrapping value: T) async throws -> Assert<T.Wrapped> {
-    try await assert(value).unwrap()
+public func assert<T: OptionalType>(unwrappingAsync value: T) async throws -> Assert<T.Wrapped> {
+    try await assert(async: value).unwrap()
 }
 
-public func assert<T: OptionalType>(unwrapping value: T, closure: (Assert<T.Wrapped>) async throws -> Void) async throws {
-    try await closure(try await assert(value).unwrap())
+public func assert<T: OptionalType>(unwrappingAsync value: T, closure: (Assert<T.Wrapped>) async throws -> Void) async throws {
+    try await closure(try await assert(async: value).unwrap())
 }
 
 @dynamicMemberLookup
