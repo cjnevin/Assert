@@ -52,8 +52,8 @@ try assert(unwrapping: user.optional) {
 }
 
 // async
-await assert(await getUserName()) == "test"
-try await assert(unwrapping: await getOptional()) == "abc"
+await assert(async: await getUserName()) == "test"
+try await assert(unwrappingAsync: await getOptional()) == "abc"
 
 // using words
 assert(user.prefs.email).isTrue()
